@@ -60,10 +60,14 @@ COPY docker-entrypoint.sh /usr/local/bin/
 COPY load-initdb.sh /usr/local/bin/
 COPY conf/janusgraph-cassandra-es-server.properties conf/log4j-server.properties ${JANUS_HOME}/conf/gremlin-server/
 COPY scripts/remote-connect.groovy ${JANUS_HOME}/scripts/
+COPY scripts/setup-mcs-truststore.sh /usr/local/bin/
 
 RUN chmod 755 /usr/local/bin/docker-entrypoint.sh && \
     chmod 755 /usr/local/bin/load-initdb.sh && \
-    chown -R janusgraph:janusgraph ${JANUS_HOME}
+    chown -R janusgraph:janusgraph ${JANUS_HOME} && \
+    chmod 755 /usr/local/bin/setup-mcs-truststore.sh
+
+RUN setup-mcs-truststore.sh
 
 EXPOSE 8182
 
